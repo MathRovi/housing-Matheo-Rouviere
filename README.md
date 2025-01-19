@@ -1,12 +1,15 @@
-HOUSING-API
-Description
-Housing-API is a simple Flask application connected to a PostgreSQL database. It provides the following endpoints:
+## HOUSING-API
+
+## Description
+
+Housing-API is a Flask application connected to a PostgreSQL database. It provides the following endpoints:
 
 GET /houses: retrieve all houses as JSON
 POST /houses: add a new house
 It manages data such as longitude, latitude, median house age, and more.
 
-Table of Contents
+## Table of Contents:
+
 Prerequisites
 Installation and Setup
 Database & Migrations
@@ -14,48 +17,46 @@ Running the Application
 API Endpoints
 Example Requests
 Contributors
-Prerequisites
+
+
+## Prerequisites:
+
 Python 3.x (ideally 3.10 or higher)
 PostgreSQL installed and running
 pyenv or pyenv-win if you want to manage multiple Python versions
-(Optional) Alembic for database migrations
-Installation and Setup
-Clone or download this repository:
+Alembic for database migrations
+
+
+## Installation and Setup:
+
+# Clone or download this repository:
 
 bash
-Copier
 git clone https://github.com/your-username/housing-api.git
 cd housing-api
-(Optional) Select your Python version using pyenv:
+
+# Select your Python version using pyenv:
 
 bash
-Copier
-pyenv local 3.10.10
-(or any version you installed)
+pyenv local 3.10.10 (In my case)
 
-Create and activate a virtual environment:
+# Create and activate a virtual environment: In bash
 
-bash
-Copier
-# Create a venv
+# Create a venv:
+
 python -m venv venv
 
-# Windows (cmd.exe):
+# Windows:
+
 venv\Scripts\activate
 
-# Windows (PowerShell):
-.\venv\Scripts\Activate.ps1
-
-# Linux/Mac:
-source venv/bin/activate
-Install dependencies:
+# Install dependencies:
 
 bash
-Copier
 pip install -r requirements.txt
-(Or if no requirements file is available: pip install flask psycopg2-binary alembic.)
 
-Database connection settings:
+
+## Database connection settings:
 
 You can configure environment variables such as DB_HOST, DB_NAME, DB_USER, DB_PASSWORD, and DB_PORT, or
 Hardcode them directly in app.py or a separate config file.
