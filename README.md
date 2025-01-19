@@ -60,19 +60,19 @@ pip install -r requirements.txt
 
 1. Create the PostgreSQL database:
 
-1) Open a terminal/console where you can run psql, and connect as a PostgreSQL superuser:
+- Open a terminal/console where you can run psql, and connect as a PostgreSQL superuser:
 
 bash
 psql -U postgres
 
-2) Create a database (e.g., housing_db) and a user (e.g., matheo) with password:
+- Create a database (e.g., housing_db) and a user (e.g., matheo) with password:
 
 sql
 CREATE DATABASE housing_db;
 CREATE USER matheo WITH PASSWORD 'u6x5qhup';
 GRANT ALL PRIVILEGES ON DATABASE housing_db TO matheo;
 
-3) (Optional) Grant permissions on the public schema if needed:
+- (Optional) Grant permissions on the public schema if needed:
 
 sql
 \c housing_db;
@@ -81,14 +81,14 @@ GRANT CREATE ON SCHEMA public TO matheo;
 
 2. Configure Alembic:
 
-1) Open the alembic.ini file in the project root.
+- Open the alembic.ini file in the project root.
 
-2) Update sqlalchemy.url to match your database. For example:
+- Update sqlalchemy.url to match your database. For example:
 
 ini
 sqlalchemy.url = postgresql://matheo:u6x5qhup@localhost:5432/housing_db
 
-3) Run migrations (if a migration is already created):
+- Run migrations (if a migration is already created):
 
 bash
 alembic upgrade head
@@ -97,17 +97,17 @@ This will create the houses table in your housing_db database.
 
 ## Running the Application
 
-1) Ensure your virtual environment is activated:
+- Ensure your virtual environment is activated:
 
 bash
 venv\Scripts\activate
 
-2) Start the Flask server:
+- Start the Flask server:
 
 bash
 python app.py
 
-3) By default, Flask will run on http://127.0.0.1:5000.
+- By default, Flask will run on http://127.0.0.1:5000.
 
 You should see something like:
 
