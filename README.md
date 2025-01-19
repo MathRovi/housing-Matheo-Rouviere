@@ -35,12 +35,11 @@ bash
 [git clone https://github.com/MatheoROUVI/housing-api.git](https://github.com/MathRovi/housing-Matheo-Rouviere.git)
 cd housing-api
 
-# Select your Python version using pyenv:
+# Select your Python version using pyenv: Bash
 
-bash
 pyenv local 3.10.10 (In my case)
 
-# Create and activate a virtual environment: In bash
+# Create and activate a virtual environment: Bash
 
 # Create a venv:
 
@@ -50,9 +49,8 @@ python -m venv venv
 
 venv\Scripts\activate
 
-# Install dependencies:
+# Install dependencies: Bash
 
-bash
 pip install -r requirements.txt
 
 
@@ -60,21 +58,18 @@ pip install -r requirements.txt
 
 1. Create the PostgreSQL database:
 
-- Open a terminal/console where you can run psql, and connect as a PostgreSQL superuser:
+- Open a terminal/console where you can run psql, and connect as a PostgreSQL superuser: Bash
 
-bash
 psql -U postgres
 
-- Create a database (e.g., housing_db) and a user (e.g., matheo) with password:
+- Create a database (e.g., housing_db) and a user (e.g., matheo) with password: SQL
 
-sql
 CREATE DATABASE housing_db;
 CREATE USER matheo WITH PASSWORD 'u6x5qhup';
 GRANT ALL PRIVILEGES ON DATABASE housing_db TO matheo;
 
-- (Optional) Grant permissions on the public schema if needed:
+- (Optional) Grant permissions on the public schema if needed: SQL
 
-sql
 \c housing_db;
 GRANT CREATE ON SCHEMA public TO matheo;
 
@@ -83,28 +78,24 @@ GRANT CREATE ON SCHEMA public TO matheo;
 
 - Open the alembic.ini file in the project root.
 
-- Update sqlalchemy.url to match your database. For example:
+- Update sqlalchemy.url to match your database. For example: ini
 
-ini
 sqlalchemy.url = postgresql://matheo:u6x5qhup@localhost:5432/housing_db
 
-- Run migrations (if a migration is already created):
+- Run migrations (if a migration is already created): Bash
 
-bash
 alembic upgrade head
 
 This will create the houses table in your housing_db database.
 
 ## Running the Application
 
-- Ensure your virtual environment is activated:
+- Ensure your virtual environment is activated: Bash
 
-bash
 venv\Scripts\activate
 
-- Start the Flask server:
+- Start the Flask server: Bash
 
-bash
 python app.py
 
 - By default, Flask will run on http://127.0.0.1:5000.
@@ -121,9 +112,8 @@ You should see something like:
 - Description: Retrieves all houses from the database.
 
 - Response: JSON array of house objects.
-Example:
+Example: Json
 
-json
 
 [
   {
@@ -147,7 +137,6 @@ json
 - Description: Inserts a new house record into the database.
 - Request Body (JSON):
 
-json
 
 {
   "longitude": -122.23,
@@ -162,9 +151,8 @@ json
   "ocean_proximity": "NEAR BAY"
 }
 
-- Response:
+- Response: JSON
 
-json
 
 {
   "id": 1,
@@ -176,15 +164,13 @@ json
 
 # Using curl
 
-1. GET all houses:
+1. GET all houses: Bash
 
-bash
 
 curl http://127.0.0.1:5000/houses
 
-2. POST a new house:
+2. POST a new house: Bash
 
-bash
 
 curl -X POST -H "Content-Type: application/json" \
      -d '{
