@@ -103,7 +103,7 @@ python app.py
 You should see something like:
 
  * Serving Flask app 'app'
- * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+ * Running on http://127.0.0.1:5000/houses 
 
 ## API Endpoints
 
