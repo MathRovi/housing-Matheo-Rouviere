@@ -32,7 +32,7 @@ Alembic for database migrations
 # Clone or download this repository:
 
 bash
-git clone https://github.com/MatheoROUVI/housing-api.git
+[git clone https://github.com/MatheoROUVI/housing-api.git](https://github.com/MathRovi/housing-Matheo-Rouviere.git)
 cd housing-api
 
 # Select your Python version using pyenv:
