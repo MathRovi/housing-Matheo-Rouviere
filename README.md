@@ -188,7 +188,7 @@ curl -X POST -H "Content-Type: application/json" \
      http://127.0.0.1:5000/houses
 
 ## Contributors
-Your Name – Matheo R.
+Name – Matheo R.
 
 ## Notes
 - Feel free to extend the API with more endpoints (PUT, DELETE, etc.).
