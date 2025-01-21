@@ -1,21 +1,3 @@
-<<<<<<< HEAD
-# Utiliser une image Python de base
-FROM python:3.10-slim
-
-# Définir un répertoire de travail
-WORKDIR /app
-
-# Copier les fichiers de l'API (y compris requirements.txt)
-COPY . /app
-
-# Installer les dépendances
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Exposer le port (optionnel, juste pour la doc)
-EXPOSE 5000
-
-# Démarrer l'application
-=======
 # Utilisation de l'image Python 3.10
 FROM python:3.10-slim
 
@@ -35,5 +17,5 @@ COPY . .
 EXPOSE 5000
 
 # Commande pour démarrer l'application Flask
->>>>>>> de1c9e4 (Dépot Partie 2 du TP)
+
 CMD ["python", "app.py"]

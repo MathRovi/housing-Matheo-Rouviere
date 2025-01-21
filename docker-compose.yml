@@ -1,36 +1,3 @@
-<<<<<<< HEAD
-version: "3.8"
-
-services:
-  api:
-    build: .
-    container_name: housing_api
-    ports:
-      - "5000:5000"
-    environment:
-      DB_HOST: db  # Nom du service PostgreSQL
-      DB_NAME: housing_db
-      DB_USER: matheo
-      DB_PASSWORD: u6x5qhup  # Le mot de passe doit être le même dans `app.py`
-      DB_PORT: "5432"  # Le port PostgreSQL
-    depends_on:
-      - db
-
-  db:
-    image: postgres:15
-    container_name: housing_db
-    environment:
-      POSTGRES_USER: matheo
-      POSTGRES_PASSWORD: u6x5qhup  # Le mot de passe doit être le même que dans `app.py`
-      POSTGRES_DB: housing_db
-    ports:
-      - "5432:5432"  # Assurez-vous que le port est exposé
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-
-volumes:
-  postgres_data:
-=======
 services:
   api:
     build: .
@@ -46,4 +13,3 @@ services:
       POSTGRES_PASSWORD: u6x5qhup
     ports:
       - "5432:5432"
->>>>>>> de1c9e4 (Dépot Partie 2 du TP)
