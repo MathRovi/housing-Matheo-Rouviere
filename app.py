@@ -1,127 +1,116 @@
-import psycopg2  # On importe psycopg2, une bibliothèque pour se connecter à PostgreSQL
-from flask import Flask, request, jsonify  # On importe Flask, request pour lire les requêtes et jsonify pour renvoyer du JSON
+from flask import Flask, jsonify, request
+from flask_sqlalchemy import SQLAlchemy
+import psycopg2
+import os
 
-app = Flask(__name__)  # On crée une application Flask en lui donnant le nom du module courant
+# Crée l'application Flask
+app = Flask(__name__)
 
-# Variables de configuration pour se connecter à PostgreSQL directement dans le code
-DB_HOST = "localhost"   
-DB_NAME = "housing_db"  
-DB_USER = "matheo"      
-DB_PASSWORD = "u6x5qhup"
-DB_PORT = "5432"        
+# Configuration de la connexion à la base de données PostgreSQL
+# Assurez-vous que le mot de passe correspond à celui défini dans docker-compose.yml
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://matheo:u6x5qhup@db:5432/housing_db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-def get_connection():
-    """
-    Cette fonction ouvre une connexion à la base PostgreSQL 
-    en utilisant les informations ci-dessus.
-    """
-    return psycopg2.connect(
-        dbname=DB_NAME,        
-        user=DB_USER,          
-        password=DB_PASSWORD,  
-        host=DB_HOST,          
-        port=DB_PORT           
-    )
+# Initialisation de SQLAlchemy pour gérer la base de données
+db = SQLAlchemy(app)
 
-@app.route("/houses", methods=["GET"])
+# Modèle pour la table "houses"
+class House(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    longitude = db.Column(db.Float, nullable=False)
+    latitude = db.Column(db.Float, nullable=False)
+    housing_median_age = db.Column(db.Integer, nullable=False)
+    total_rooms = db.Column(db.Integer, nullable=False)
+    total_bedrooms = db.Column(db.Integer, nullable=False)
+    population = db.Column(db.Integer, nullable=False)
+    households = db.Column(db.Integer, nullable=False)
+    median_income = db.Column(db.Float, nullable=False)
+    median_house_value = db.Column(db.Float, nullable=False)
+    ocean_proximity = db.Column(db.String(50), nullable=False)
+
+# Route GET pour obtenir toutes les maisons
+@app.route('/houses', methods=['GET'])
 def get_houses():
-    """
-    Quand on fait un GET sur /houses :
-    - On se connecte à la base
-    - On récupère toutes les lignes de la table 'houses'
-    - On renvoie le résultat en JSON
-    """
-    conn = get_connection()  # On ouvre la connexion à PostgreSQL
-    cur = conn.cursor()      # On crée un curseur pour exécuter les requêtes SQL
-    cur.execute("""SELECT
-        id, longitude, latitude, housing_median_age, total_rooms,
-        total_bedrooms, population, households, median_income,
-        median_house_value, ocean_proximity
-        FROM houses
-    """)                     # On récupère toutes les colonnes nécessaires de la table houses
-    rows = cur.fetchall()    # On récupère toutes les lignes renvoyées par la requête
-    cur.close()              # On ferme le curseur
-    conn.close()             # On ferme la connexion à la base
-
-    results = []             # On prépare une liste pour stocker les résultats
-    for row in rows:         # Pour chaque ligne récupérée (row)...
-        results.append({
-            "id": row[0],
-            "longitude": row[1],
-            "latitude": row[2],
-            "housing_median_age": row[3],
-            "total_rooms": row[4],
-            "total_bedrooms": row[5],
-            "population": row[6],
-            "households": row[7],
-            "median_income": row[8],
-            "median_house_value": row[9],
-            "ocean_proximity": row[10]
-        })
-    # results est maintenant une liste de dictionnaires, plus facile à renvoyer en JSON
-    return jsonify(results), 200  # On renvoie la liste en JSON 
-
-@app.route("/houses", methods=["POST"])
-def create_house():
-    """
-    Quand on fait un POST sur /houses :
-    - On attend un JSON contenant les infos d'une maison
-    - On insère ces infos dans la table 'houses'
-    - On renvoie un message de succès
-    """
-    data = request.get_json()  # On récupère les données JSON envoyées dans la requête
-
-    # Liste des champs obligatoires pour créer une maison
-    required_keys = [
-        "longitude", "latitude", "housing_median_age",
-        "total_rooms", "total_bedrooms", "population",
-        "households", "median_income", "median_house_value",
-        "ocean_proximity"
-    ]
-    for key in required_keys:
-        # Si un champ manque dans le JSON, on renvoie une erreur 400
-        if key not in data:
-            return jsonify({"error": f"Missing field '{key}'"}), 400
-
     try:
-        conn = get_connection()  # On se connecte à la base
-        cur = conn.cursor()      # On crée un curseur
-        query = """
-        INSERT INTO houses (
-            longitude, latitude, housing_median_age,
-            total_rooms, total_bedrooms, population,
-            households, median_income, median_house_value,
-            ocean_proximity
-        )
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-        RETURNING id;
-        """
-        # On exécute la requête d'insertion avec les valeurs reçues dans data
-        cur.execute(query, (
-            data["longitude"],
-            data["latitude"],
-            data["housing_median_age"],
-            data["total_rooms"],
-            data["total_bedrooms"],
-            data["population"],
-            data["households"],
-            data["median_income"],
-            data["median_house_value"],
-            data["ocean_proximity"]
-        ))
-        new_id = cur.fetchone()[0]  
-        conn.commit()               
-        cur.close()                 
-        conn.close()                
-
-        # On renvoie l'id nouvellement créé et un message de succès
-        return jsonify({"id": new_id, "message": "House created"}), 201
-
+        houses = House.query.all()
+        results = []
+        for house in houses:
+            house_data = {
+                'id': house.id,
+                'longitude': house.longitude,
+                'latitude': house.latitude,
+                'housing_median_age': house.housing_median_age,
+                'total_rooms': house.total_rooms,
+                'total_bedrooms': house.total_bedrooms,
+                'population': house.population,
+                'households': house.households,
+                'median_income': house.median_income,
+                'median_house_value': house.median_house_value,
+                'ocean_proximity': house.ocean_proximity
+            }
+            results.append(house_data)
+        return jsonify(results), 200
     except Exception as e:
-        # Si jamais on a une erreur quelconque (par exemple de connexion), 
-        # on la renvoie dans un JSON avec un code 500 (erreur serveur)
         return jsonify({"error": str(e)}), 500
 
-if __name__ == "__main__":
-    # On lance l'application Flask en mode debug, sur le port 5000
-    app.run(debug=True, port=5000)
+# Route POST pour ajouter une maison
+@app.route('/houses', methods=['POST'])
+def create_house():
+    try:
+        data = request.get_json()
+
+        # Validation des champs nécessaires
+        required_fields = [
+            'longitude', 'latitude', 'housing_median_age',
+            'total_rooms', 'total_bedrooms', 'population',
+            'households', 'median_income', 'median_house_value', 'ocean_proximity'
+        ]
+        for field in required_fields:
+            if field not in data:
+                return jsonify({"error": f"Missing field '{field}'"}), 400
+
+        # Création de la nouvelle maison
+        new_house = House(
+            longitude=data['longitude'],
+            latitude=data['latitude'],
+            housing_median_age=data['housing_median_age'],
+            total_rooms=data['total_rooms'],
+            total_bedrooms=data['total_bedrooms'],
+            population=data['population'],
+            households=data['households'],
+            median_income=data['median_income'],
+            median_house_value=data['median_house_value'],
+            ocean_proximity=data['ocean_proximity']
+        )
+
+        db.session.add(new_house)
+        db.session.commit()
+
+        return jsonify({
+            "message": "House created successfully",
+            "id": new_house.id
+        }), 201
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+# Vérifier la connexion à la base de données lors du démarrage
+def check_db_connection():
+    try:
+        connection = psycopg2.connect(
+            dbname=os.getenv('DB_NAME'),
+            user=os.getenv('DB_USER'),
+            password=os.getenv('DB_PASSWORD'),
+            host=os.getenv('DB_HOST'),
+            port=os.getenv('DB_PORT')
+        )
+        connection.close()
+    except Exception as e:
+        print(f"Database connection failed: {str(e)}")
+        exit(1)
+
+# Vérification de la connexion avant de démarrer l'application
+check_db_connection()
+
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0', port=5000)
