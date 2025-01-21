@@ -1,6 +1,7 @@
 from alembic import op
 import sqlalchemy as sa
 
+# Révision ID et dépendances
 revision = 'xxxx_create_houses_table'
 down_revision = None
 branch_labels = None
@@ -10,16 +11,16 @@ def upgrade():
     op.create_table(
         'houses',
         sa.Column('id', sa.Integer, primary_key=True),
-        sa.Column('longitude', sa.Float),
-        sa.Column('latitude', sa.Float),
-        sa.Column('housing_median_age', sa.Integer),
-        sa.Column('total_rooms', sa.Integer),
-        sa.Column('total_bedrooms', sa.Integer),
-        sa.Column('population', sa.Integer),
-        sa.Column('households', sa.Integer),
-        sa.Column('median_income', sa.Float),
-        sa.Column('median_house_value', sa.Float),
-        sa.Column('ocean_proximity', sa.String(50))
+        sa.Column('longitude', sa.Float, nullable=False),
+        sa.Column('latitude', sa.Float, nullable=False),
+        sa.Column('housing_median_age', sa.Float, nullable=False),
+        sa.Column('total_rooms', sa.Integer, nullable=False),
+        sa.Column('total_bedrooms', sa.Integer, nullable=False),
+        sa.Column('population', sa.Integer, nullable=False),
+        sa.Column('households', sa.Integer, nullable=False),
+        sa.Column('median_income', sa.Float, nullable=False),
+        sa.Column('median_house_value', sa.Float, nullable=False),
+        sa.Column('ocean_proximity', sa.String(255), nullable=False),
     )
 
 def downgrade():
