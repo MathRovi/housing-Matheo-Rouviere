@@ -116,8 +116,4 @@ def create_house():
         return jsonify({"error": str(e)}), 500  # En cas d'erreur, renvoyer un message d'erreur
 
 if __name__ == "__main__":
-<<<<<<< HEAD
     app.run(debug=True, host="0.0.0.0", port=5000)  # Lancer l'application Flask en mode debug
-=======
-    app.run(debug=True, host="0.0.0.0", port=5000)  # Lancer l'application Flask en mode debug
->>>>>>> origin/main
