@@ -24,8 +24,4 @@ def upgrade():
     )
 
 def downgrade():
-<<<<<<< HEAD
     op.drop_table('houses')
-=======
-    op.drop_table('houses')
->>>>>>> origin/main
