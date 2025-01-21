@@ -17,5 +17,4 @@ COPY . .
 EXPOSE 5000
 
 # Commande pour démarrer l'application Flask
-
 CMD ["python", "app.py"]
